@@ -146,15 +146,19 @@ def update_clusters():
         bestMinimum = BIG_NUMBER # მაქსიმალურად დიდი რიცხვი
         currentCluster = 0
         
-        # თითოეული წერტილისთვის 
+        # თითოეული წერტილისთვის დაითვლება მანძილი ყველა კასტერის მიმართ
         for j in range(NUM_CLUSTERS):
             distance = get_distance(data[i].get_x(), data[i].get_y(), centroids[j].get_x(), centroids[j].get_y())
+            
             if(distance < bestMinimum):
                 bestMinimum = distance
                 currentCluster = j
-        
+
+        # წერტილს მივაკუთვნებთ შესაბამის კლასტერს, რომელთანაც ჰქონდა მინიმალური მანძილი
         data[i].set_cluster(currentCluster)
         
+        # თუ ერთი მაინც წერტილს კლასტერი არ გააჩნია არ თუ რომელიმე განსხვავებულ კლასტერს შეიცავს
+        # isStillMoving ცვლადი მიიღეებს მნიშვნელობა (1)-ს და k-საშუალოს ალგორითმი დატრიალდება ხელახლა
         if(data[i].get_cluster() is None or data[i].get_cluster() != currentCluster):
             data[i].set_cluster(currentCluster)
             isStillMoving = 1
@@ -182,6 +186,7 @@ def perform_kmeans():
     
     return
 
+# მიღებული პასუხის ბეჭდვა
 def print_results():
     for i in range(NUM_CLUSTERS):
         print("Cluster ", i, " includes:")
